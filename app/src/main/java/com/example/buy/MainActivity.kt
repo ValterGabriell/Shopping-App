@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.view.ActionMode
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,7 +25,7 @@ import com.example.buy.viewmodel.NovoProtudoViewModel
 import java.util.*
 import javax.security.auth.login.LoginException
 
-class MainActivity : AppCompatActivity(), MainAction {
+class MainActivity : AppCompatActivity() {
 
 
     /**
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity(), MainAction {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by viewModels()
     private var produtosList = ArrayList<ModeladorComprasDados>()
-
+    private lateinit var adapter: ComprasAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity(), MainAction {
         configurarRv()
 
     }
+
 
     private fun btnClicks() {
         binding.fab.setOnClickListener {
@@ -67,7 +69,7 @@ class MainActivity : AppCompatActivity(), MainAction {
         })
 
         viewModel.srtValorLV.observe(this, {
-            if (produtosList.size > 0){
+            if (produtosList.size > 0) {
                 binding.tvValor.text = "Valor: R$ $it"
             }
 
@@ -79,40 +81,27 @@ class MainActivity : AppCompatActivity(), MainAction {
         val layoutManager = LinearLayoutManager(this)
         binding.rvCompras.layoutManager = layoutManager
         produtosList.reverse()
-        var adapter = ComprasAdapter(this, produtosList, this)
+        adapter = ComprasAdapter(produtosList)
         binding.rvCompras.adapter = adapter
 
-        //click
-/*
-        adapter.setOnClickListener(object : ComprasAdapter.onClickListener{
-            override fun onItemClick(position: Long) {
-              enterId(position)
-            }
-        })
-
- */
+        adapter.itemClick = {
+            val intent = Intent(this, EditarDelete::class.java)
+            intent.putExtra("id", it)
+            startActivity(intent)
+        }
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.getAllProdutos()
-        viewModel.getValor(produtosList)
+        viewModel.getValor()
     }
 
-    private fun tvTratamento(){
+    private fun tvTratamento() {
         if (produtosList.size != 0) {
             binding.tvValor.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.tvValor.text = "Insira um produto"
         }
     }
-
-    override fun enterId(id: Long) {
-        val intent = Intent(this, EditarDelete::class.java)
-        intent.putExtra("id", id)
-        startActivity(intent)
-    }
-
-
-
 }

@@ -2,7 +2,6 @@ package com.example.buy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -13,8 +12,8 @@ import com.example.buy.viewmodel.NovoProtudoViewModel
 
 class NovoProduto : AppCompatActivity() {
 
-    private val viewModelNew : NovoProtudoViewModel by viewModels()
-    private lateinit var binding : ActivityNovoProdutoBinding
+    private val viewModelNew: NovoProtudoViewModel by viewModels()
+    private lateinit var binding: ActivityNovoProdutoBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,40 +21,46 @@ class NovoProduto : AppCompatActivity() {
         supportActionBar?.title = "Nova compra"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-       hideBtn()
+        hideBtn()
         click()
-
-
-
-
-
 
 
     }
 
-    private fun hideBtn(){
+    private fun hideBtn() {
         val tamanhoLista = intent.extras?.getInt("tamanhoLista")
-        if (tamanhoLista != 0){
+        if (tamanhoLista != 0) {
             binding.btnDelete.visibility = View.VISIBLE
         }
 
     }
+
     private fun click() {
 
-            binding.btnAdicionar.setOnClickListener {
-                var strNomeProduto: String = binding.etNomeProduto.text.toString()
-                var strPrecoProduto: String = binding.etPrecoProduto.text.toString()
-                var qtd : String = binding.etQtd.text.toString()
-                var valor: Float = strPrecoProduto.toFloat()
-                var qtdTotal = qtd.toFloat() * valor
-                var produtoASerSalvo = ModeladorComprasDados(0, strNomeProduto, qtdTotal)
-                viewModelNew.addNewProduto(produtoASerSalvo)
-                finish()
+        binding.btnAdicionar.setOnClickListener {
+
+            if (!binding.etNomeProduto.text.isEmpty()) {
+                if (!binding.etPrecoProduto.text.isEmpty()) {
+                    if (!binding.etQtd.text.isEmpty()) {
+                        val strNomeProduto: String = binding.etNomeProduto.text.toString()
+                        val strPrecoProduto: String = binding.etPrecoProduto.text.toString()
+                        val qtd: String = binding.etQtd.text.toString()
+                        val valor: Float = strPrecoProduto.toFloat()
+                        val qtdTotal = qtd.toFloat() * valor
+                        val produtoASerSalvo = ModeladorComprasDados(0, strNomeProduto, qtdTotal, qtd)
+                        viewModelNew.addNewProduto(produtoASerSalvo)
+                        finish()
+                    }
+                    Toast.makeText(this, "Preencha tudo", Toast.LENGTH_SHORT).show()
+                }
+                Toast.makeText(this, "Preencha tudo", Toast.LENGTH_SHORT).show()
+            }
+
 
         }
 
         binding.btnDelete.setOnClickListener {
-            var deleteAll = ModeladorComprasDados()
+            val deleteAll = ModeladorComprasDados()
             viewModelNew.deleteAll(deleteAll)
             finish()
         }

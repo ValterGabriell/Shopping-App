@@ -15,15 +15,14 @@ class NovoProtudoViewModel(application: Application) : AndroidViewModel(applicat
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
 
-    fun addNewProduto(modeladorComprasDados: ModeladorComprasDados){
+    fun addNewProduto(modeladorComprasDados: ModeladorComprasDados) {
         coroutineScope.launch {
             RoomDataSource(getApplication()).add(modeladorComprasDados)
         }
     }
 
 
-
-    fun deleteAll(modeladorComprasDados: ModeladorComprasDados){
+    fun deleteAll(modeladorComprasDados: ModeladorComprasDados) {
         coroutineScope.launch {
             RoomDataSource(getApplication()).deleteAll(modeladorComprasDados)
         }

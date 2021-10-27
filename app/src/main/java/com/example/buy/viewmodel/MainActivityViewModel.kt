@@ -15,36 +15,36 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.logging.LogManager
 
-class MainActivityViewModel (application: Application) : AndroidViewModel(application){
+class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     val produtos = MutableLiveData<List<ModeladorComprasDados>>()
     val srtValorLV = MutableLiveData<String>()
 
 
-
-    fun getAllProdutos(){
+    fun getAllProdutos() {
         coroutineScope.launch {
             val listaProdutos = RoomDataSource(getApplication()).getAll()
             produtos.postValue(listaProdutos)
-
-
         }
     }
-    fun getValor(arrayList: ArrayList<ModeladorComprasDados>) {
+
+    fun getValor() {
         coroutineScope.launch {
-            val srtValor : String = RoomDataSource(getApplication()).getVaor()?.toString().toString()
-            if (srtValor != null){
+            val srtValor: String = RoomDataSource(getApplication()).getVaor()?.toString().toString()
+            if (srtValor != null) {
                 srtValorLV.postValue(srtValor)
             }
 
         }
     }
 
+    fun deleteId(id: Long) {
+        coroutineScope.launch {
+            RoomDataSource(getApplication()).deleteId(id)
 
-
-
-
+        }
+    }
 
 
 }
