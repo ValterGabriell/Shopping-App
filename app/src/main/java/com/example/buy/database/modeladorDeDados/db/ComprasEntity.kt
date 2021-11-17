@@ -28,7 +28,7 @@ class ComprasEntity(
 
     }
 
-    fun toBuy() = ModeladorComprasDados(id, nome, preco, qtd, selected)
+    fun getAll() = ModeladorComprasDados(id, nome, preco, qtd, selected)
 
 
 }

@@ -39,7 +39,7 @@ class EditarDelete : AppCompatActivity() {
         binding.btnDeletar.apply {
             text = "Deletar"
             setOnClickListener {
-                viewModel.deleteId(id!!)
+                viewModel.deleteId(id)
                 finish()
             }
         }

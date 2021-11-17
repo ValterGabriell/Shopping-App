@@ -22,11 +22,8 @@ class NovoProtudoViewModel(application: Application) : AndroidViewModel(applicat
     }
 
 
-    fun deleteAll(modeladorComprasDados: ModeladorComprasDados) {
-        coroutineScope.launch {
-            RoomDataSource(getApplication()).deleteAll(modeladorComprasDados)
-        }
-    }
+
+
 
 
 }

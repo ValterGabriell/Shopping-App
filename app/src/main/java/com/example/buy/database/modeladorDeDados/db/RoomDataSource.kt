@@ -6,22 +6,23 @@ class RoomDataSource(context: Context) : DataSource {
     val comprasDao = DatabaseService.getInstance(context).comprasDao()
 
 
-    override suspend fun add(modeladorComprasDados: ModeladorComprasDados) =
+    override fun add(modeladorComprasDados: ModeladorComprasDados) =
         comprasDao.addNewBuy(ComprasEntity.fromModel(modeladorComprasDados))
 
-    override suspend fun getAll(): List<ModeladorComprasDados> = comprasDao.getAll().map {
-        it.toBuy()
+    override fun getAll(): List<ModeladorComprasDados> = comprasDao.getAll().map {
+        it.getAll()
     }
 
-    override suspend fun getVaor(): Float? = comprasDao.getValor()
+    override fun getVaor(): Float? = comprasDao.getValor()
 
-    override suspend fun deleteAll(modeladorComprasDados: ModeladorComprasDados) =
+    override fun deleteAll(modeladorComprasDados: ModeladorComprasDados) =
         comprasDao.deleteAll()
 
-    override suspend fun deleteId(id: Long) = comprasDao.deleteId(id)
+    override fun deleteId(id: Long) = comprasDao.deleteId(id)
 
-    override suspend fun getId(id: Long) : ModeladorComprasDados? = comprasDao.getId(id)?.toBuy()
-    override suspend fun updateNome(nome: String,preco : String, id: Long) = comprasDao.updateNome(nome,preco, id)
+    override fun getId(id: Long): ModeladorComprasDados? = comprasDao.getId(id)?.getAll()
+    override fun updateNome(nome: String, preco: String, id: Long) =
+        comprasDao.updateNome(nome, preco, id)
 
 
 }

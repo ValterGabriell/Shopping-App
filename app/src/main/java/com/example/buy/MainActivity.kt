@@ -1,29 +1,19 @@
 package com.example.buy
 
-import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.content.Intent
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.view.ActionMode
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.buy.database.modeladorDeDados.db.ComprasDao
+import com.example.buy.database.modeladorDeDados.db.ModeladorComprasDados
 import com.example.buy.databinding.ActivityMainBinding
 import com.example.buy.view.adapter.ComprasAdapter
-import com.example.buy.database.modeladorDeDados.db.ModeladorComprasDados
 import com.example.buy.viewmodel.MainActivityViewModel
-import com.example.buy.viewmodel.NovoProtudoViewModel
 import java.util.*
-import javax.security.auth.login.LoginException
 
 class MainActivity : AppCompatActivity() {
 
@@ -103,5 +93,20 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.tvValor.text = "Insira um produto"
         }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_item, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.delete_All){
+            val modeladorComprasDados = ModeladorComprasDados()
+            viewModel.deleteAll(modeladorComprasDados)
+            onResume()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

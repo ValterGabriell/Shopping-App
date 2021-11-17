@@ -38,13 +38,9 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
         }
     }
-
-    fun deleteId(id: Long) {
+    fun deleteAll(modeladorComprasDados: ModeladorComprasDados) {
         coroutineScope.launch {
-            RoomDataSource(getApplication()).deleteId(id)
-
+            RoomDataSource(getApplication()).deleteAll(modeladorComprasDados)
         }
     }
-
-
 }

@@ -20,18 +20,8 @@ class NovoProduto : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_novo_produto)
         supportActionBar?.title = "Nova compra"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        hideBtn()
         click()
 
-
-    }
-
-    private fun hideBtn() {
-        val tamanhoLista = intent.extras?.getInt("tamanhoLista")
-        if (tamanhoLista != 0) {
-            binding.btnDelete.visibility = View.VISIBLE
-        }
 
     }
 
@@ -39,9 +29,9 @@ class NovoProduto : AppCompatActivity() {
 
         binding.btnAdicionar.setOnClickListener {
 
-            if (!binding.etNomeProduto.text.isEmpty()) {
-                if (!binding.etPrecoProduto.text.isEmpty()) {
-                    if (!binding.etQtd.text.isEmpty()) {
+            if (binding.etNomeProduto.text.isNotEmpty()) {
+                if (binding.etPrecoProduto.text.isNotEmpty()) {
+                    if (binding.etQtd.text.isNotEmpty()) {
                         val strNomeProduto: String = binding.etNomeProduto.text.toString()
                         val strPrecoProduto: String = binding.etPrecoProduto.text.toString()
                         val qtd: String = binding.etQtd.text.toString()
@@ -51,20 +41,11 @@ class NovoProduto : AppCompatActivity() {
                         viewModelNew.addNewProduto(produtoASerSalvo)
                         finish()
                     }
-                    Toast.makeText(this, "Preencha tudo", Toast.LENGTH_SHORT).show()
                 }
-                Toast.makeText(this, "Preencha tudo", Toast.LENGTH_SHORT).show()
             }
 
 
         }
-
-        binding.btnDelete.setOnClickListener {
-            val deleteAll = ModeladorComprasDados()
-            viewModelNew.deleteAll(deleteAll)
-            finish()
-        }
-
     }
 
 }
