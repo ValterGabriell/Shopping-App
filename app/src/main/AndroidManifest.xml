@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="?android:attr/actionModeFindDrawable"
         android:supportsRtl="true"
+        android:name=".di.MyApp"
         android:theme="@style/Theme.Buy">
         <activity
             android:name=".EditarDelete"

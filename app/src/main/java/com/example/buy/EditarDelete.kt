@@ -10,10 +10,14 @@ import androidx.databinding.DataBindingUtil
 import com.example.buy.database.modeladorDeDados.db.ModeladorComprasDados
 import com.example.buy.databinding.ActivityEditarDeleteBinding
 import com.example.buy.viewmodel.EditarDeleteViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class EditarDelete : AppCompatActivity() {
     private lateinit var binding: ActivityEditarDeleteBinding
-    private val viewModel: EditarDeleteViewModel by viewModels()
+    private val viewModel by inject<EditarDeleteViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,13 +28,18 @@ class EditarDelete : AppCompatActivity() {
 
         val id = intent.extras?.getLong("id")
         if (id != 0L) {
-            viewModel.getId(id!!)
-            viewModel.compraAtual.observe(this, {
-                binding.etNome.setText(it.name)
-                binding.etValor.setText(it.preco.toString())
-                btnDeletar(id)
-                btnEditar(id)
-            })
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.getId(id!!)
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.compraAtual.observe(this@EditarDelete) {
+                        binding.etNome.setText(it.name)
+                        binding.etValor.setText(it.preco.toString())
+                        btnDeletar(id)
+                        btnEditar(id)
+                    }
+                }
+
+            }
         }
     }
 
@@ -39,8 +48,11 @@ class EditarDelete : AppCompatActivity() {
         binding.btnDeletar.apply {
             text = "Deletar"
             setOnClickListener {
-                viewModel.deleteId(id)
-                finish()
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.deleteId(id)
+                    finish()
+                }
+
             }
         }
     }
@@ -49,16 +61,16 @@ class EditarDelete : AppCompatActivity() {
         binding.btnEditar.apply {
             text = "Atualizar Produto"
             setOnClickListener {
-
-                if (!binding.etNome.text.isEmpty()) {
-                    if (!binding.etValor.text.isEmpty()) {
-                        var srtNome: String = binding.etNome.text.toString()
-                        var srtPreco: String = binding.etValor.text.toString()
-                        viewModel.update(srtNome, srtPreco, id)
-                        finish()
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (!binding.etNome.text.isEmpty()) {
+                        if (!binding.etValor.text.isEmpty()) {
+                            var srtNome: String = binding.etNome.text.toString()
+                            var srtPreco: String = binding.etValor.text.toString()
+                            viewModel.update(srtNome, srtPreco, id)
+                            finish()
+                        }
                     }
                 }
-
             }
         }
     }

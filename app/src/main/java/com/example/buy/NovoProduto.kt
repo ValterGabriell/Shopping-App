@@ -9,10 +9,14 @@ import androidx.databinding.DataBindingUtil
 import com.example.buy.database.modeladorDeDados.db.ModeladorComprasDados
 import com.example.buy.databinding.ActivityNovoProdutoBinding
 import com.example.buy.viewmodel.NovoProtudoViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class NovoProduto : AppCompatActivity() {
 
-    private val viewModelNew: NovoProtudoViewModel by viewModels()
+    private val viewModelNew by inject<NovoProtudoViewModel>()
     private lateinit var binding: ActivityNovoProdutoBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,18 +32,20 @@ class NovoProduto : AppCompatActivity() {
     private fun click() {
 
         binding.btnAdicionar.setOnClickListener {
-
-            if (binding.etNomeProduto.text.isNotEmpty()) {
-                if (binding.etPrecoProduto.text.isNotEmpty()) {
-                    if (binding.etQtd.text.isNotEmpty()) {
-                        val strNomeProduto: String = binding.etNomeProduto.text.toString()
-                        val strPrecoProduto: String = binding.etPrecoProduto.text.toString()
-                        val qtd: String = binding.etQtd.text.toString()
-                        val valor: Float = strPrecoProduto.toFloat()
-                        val qtdTotal = qtd.toFloat() * valor
-                        val produtoASerSalvo = ModeladorComprasDados(0, strNomeProduto, qtdTotal, qtd)
-                        viewModelNew.addNewProduto(produtoASerSalvo)
-                        finish()
+            CoroutineScope(Dispatchers.IO).launch {
+                if (binding.etNomeProduto.text.isNotEmpty()) {
+                    if (binding.etPrecoProduto.text.isNotEmpty()) {
+                        if (binding.etQtd.text.isNotEmpty()) {
+                            val strNomeProduto: String = binding.etNomeProduto.text.toString()
+                            val strPrecoProduto: String = binding.etPrecoProduto.text.toString()
+                            val qtd: String = binding.etQtd.text.toString()
+                            val valor: Float = strPrecoProduto.toFloat()
+                            val qtdTotal = qtd.toFloat() * valor
+                            val produtoASerSalvo =
+                                ModeladorComprasDados(0, strNomeProduto, qtdTotal, qtd)
+                            viewModelNew.addNewProduto(produtoASerSalvo)
+                            finish()
+                        }
                     }
                 }
             }

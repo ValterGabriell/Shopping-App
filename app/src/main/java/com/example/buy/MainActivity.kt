@@ -13,6 +13,10 @@ import com.example.buy.database.modeladorDeDados.db.ModeladorComprasDados
 import com.example.buy.databinding.ActivityMainBinding
 import com.example.buy.view.adapter.ComprasAdapter
 import com.example.buy.viewmodel.MainActivityViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +27,7 @@ class MainActivity : AppCompatActivity() {
      */
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainActivityViewModel by viewModels()
+    private val viewModel by inject<MainActivityViewModel>()
     private var produtosList = ArrayList<ModeladorComprasDados>()
     private lateinit var adapter: ComprasAdapter
 
@@ -52,18 +56,18 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun adicionarOberserver() {
-        viewModel.produtos.observe(this, {
+        viewModel.produtos.observe(this) {
             produtosList = it as ArrayList<ModeladorComprasDados>
             configurarRv()
             tvTratamento()
-        })
+        }
 
-        viewModel.srtValorLV.observe(this, {
+        viewModel.srtValorLV.observe(this) {
             if (produtosList.size > 0) {
                 binding.tvValor.text = "Valor: R$ $it"
             }
 
-        })
+        }
     }
 
 
@@ -83,8 +87,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getAllProdutos()
-        viewModel.getValor()
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getAllProdutos()
+            viewModel.getValor()
+        }
+
     }
 
     private fun tvTratamento() {
@@ -95,16 +102,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_item, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.delete_All){
+        if (item.itemId == R.id.delete_All) {
             val modeladorComprasDados = ModeladorComprasDados()
-            viewModel.deleteAll(modeladorComprasDados)
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.deleteAll(modeladorComprasDados)
+            }
+
             onResume()
         }
         return super.onOptionsItemSelected(item)

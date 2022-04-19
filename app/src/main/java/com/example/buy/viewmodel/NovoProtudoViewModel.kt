@@ -4,6 +4,7 @@ import android.app.Application
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.buy.Repository.NewProdutoActivityRepository
 
 import com.example.buy.database.modeladorDeDados.db.ModeladorComprasDados
 import com.example.buy.database.modeladorDeDados.db.RoomDataSource
@@ -11,19 +12,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NovoProtudoViewModel(application: Application) : AndroidViewModel(application) {
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+class NovoProtudoViewModel(
+    private val newProdutoActivityRepository: NewProdutoActivityRepository,
+    application: Application
+) : AndroidViewModel(application) {
 
 
-    fun addNewProduto(modeladorComprasDados: ModeladorComprasDados) {
-        coroutineScope.launch {
-            RoomDataSource(getApplication()).add(modeladorComprasDados)
-        }
+    suspend fun addNewProduto(modeladorComprasDados: ModeladorComprasDados) {
+
+        newProdutoActivityRepository.addNewProduto(getApplication(), modeladorComprasDados)
+
     }
-
-
-
-
 
 
 }

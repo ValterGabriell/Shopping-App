@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.buy.Repository.MainActivityRepository
 import com.example.buy.database.modeladorDeDados.db.ModeladorComprasDados
 import com.example.buy.database.modeladorDeDados.db.RoomDataSource
 import kotlinx.coroutines.CoroutineScope
@@ -15,32 +16,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.logging.LogManager
 
-class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+class MainActivityViewModel(
+    private val mainActivityRepository: MainActivityRepository,
+    application: Application
+) : AndroidViewModel(application) {
 
     val produtos = MutableLiveData<List<ModeladorComprasDados>>()
     val srtValorLV = MutableLiveData<String>()
 
 
-    fun getAllProdutos() {
-        coroutineScope.launch {
-            val listaProdutos = RoomDataSource(getApplication()).getAll()
-            produtos.postValue(listaProdutos)
-        }
+    suspend fun getAllProdutos() {
+        mainActivityRepository.getAllProdutos(getApplication(), produtos)
     }
 
-    fun getValor() {
-        coroutineScope.launch {
-            val srtValor: String = RoomDataSource(getApplication()).getVaor()?.toString().toString()
-            if (srtValor != null) {
-                srtValorLV.postValue(srtValor)
-            }
-
-        }
+    suspend fun getValor() {
+        mainActivityRepository.getValor(getApplication(), srtValorLV)
     }
-    fun deleteAll(modeladorComprasDados: ModeladorComprasDados) {
-        coroutineScope.launch {
-            RoomDataSource(getApplication()).deleteAll(modeladorComprasDados)
-        }
+
+    suspend fun deleteAll(modeladorComprasDados: ModeladorComprasDados) {
+        mainActivityRepository.deleteAll(getApplication(), modeladorComprasDados)
     }
 }
