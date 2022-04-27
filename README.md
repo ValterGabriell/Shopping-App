@@ -1,4 +1,4 @@
-# Aplicativos-de-Notas
+# Aplicativos-de-Compras
 <h2>Inicio</h2>
   -O aplicativo demonstra um CRUD completo utilizando o banco de dados do próprio Android<br />
   -O usuário poderá cadastrar produtos que ficarão em uma lista como se fossem seu carrinho de compras<br />
