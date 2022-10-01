@@ -1,21 +1,21 @@
-# Aplicativos-de-Compras
-<h2>Inicio</h2>
-  -O aplicativo demonstra um CRUD completo utilizando o banco de dados do próprio Android<br />
-  -O usuário poderá cadastrar produtos que ficarão em uma lista como se fossem seu carrinho de compras<br />
-  -MVVM foi utilizado em todo projeto, buscando seguir os principios SOLID.<br />
-  -O salvamento dos dados é feito localmente utilizando a biblioteca de persistência de dados
+# Shopping-Apps
+<h2>Start</h2>
+  -The application demonstrates a complete CRUD using Android's own database<br />
+  -The user will be able to register products that will be in a list as if they were their shopping cart<br />
+  -MVVM was used throughout the project, seeking to follow the SOLID principles.<br />
+  -Data saving is done locally using the data persistence library
 Room.
-  -Utilizando arquitetura MVVM
+  -Using MVVM architecture
 
-<h3>Tecnologias usadas</h3>
--Utilizado biblioteca Room<br />
+<h3>Technologies used</h3>
+-Used Room library<br />
 -MVVM<br/>
 -Solid</br>
--Injeção de dependencia com o Koin</br>
+-Dependency injection with Koin</br>
 
 
 
-# Sreenshots
+# Screenshots
 <div align="left">
 <img src="https://user-images.githubusercontent.com/63808405/164115524-e526ed1b-64d4-442f-9800-c961c5206675.jpeg" width="200px"/>
 <img src="https://user-images.githubusercontent.com/63808405/164115527-e02f26b8-d93a-4b7c-96dc-ef045710956d.jpeg" width="200px"/>
