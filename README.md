@@ -1,4 +1,4 @@
-# Shopping-Apps
+# Shopping-App
 <h2>Start</h2>
   -The application demonstrates a complete CRUD using Android's own database<br />
   -The user will be able to register products that will be in a list as if they were their shopping cart<br />
